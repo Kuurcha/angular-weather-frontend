@@ -1,22 +1,21 @@
 <app-header></app-header>
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Add Weather Records</h5>
-          <p class="card-text">Click here to add new weather records.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Watch Weather Records</h5>
-          <p class="card-text">Click here to view existing weather records.</p>
-        </div>
-      </div>
-    </div>
+
+<div
+  class="headerOffset d-flex flex-row justify-content-center align-items-center"
+  style="min-height: 100vh"
+>
+  <div class="flex mb-3s">
+    <img src="/assets/WeatherIcon.png" alt="Your Image" />
+  </div>
+  <div class="flex-column">
+    <app-card-button
+      [title]="'Add Weather Records'"
+      [description]="'Click here to add new weather records.'"
+    ></app-card-button>
+    <app-card-button
+      [title]="'Browse Weather Records'"
+      [description]="'Click here to view existing weather records.'"
+    ></app-card-button>
   </div>
 </div>
 
