@@ -6,7 +6,11 @@
     multiple
   />
   <div class="d-flex">
-    <button (click)="uploadFiles()" class="btn btn-primary mx-3">
+    <button
+      (click)="uploadFiles()"
+      class="btn btn-primary mx-3"
+      [disabled]="this.isLoading"
+    >
       Upload Files
     </button>
     <app-loading-spinner [isLoading]="this.isLoading"></app-loading-spinner>

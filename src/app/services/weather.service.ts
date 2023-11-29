@@ -28,7 +28,19 @@ export class WeatherService {
           return response;
         }),
         catchError((error: any) => {
-          return of(error.error ?? error);
+          if (error.status === 0) {
+            const networkError = new Error(
+              "Network error. Server couldn't be reached. Please check your internet connection."
+            );
+            return of(networkError);
+          } else {
+            // Handle other errors
+            return of(
+              error.error != null && error.error.message != null
+                ? error.error
+                : error
+            );
+          }
         })
       );
     } else {
@@ -37,27 +49,4 @@ export class WeatherService {
       return of(apiResponse);
     }
   }
-
-  // onUploadDepricated(selectedFiles: FileList): Observable<ApiResponse> {
-  //   let endpointPath = this.baseUrl + '/Upload';
-  //   if (selectedFiles) {
-  //     const formData = new FormData();
-  //     for (let i = 0; i < selectedFiles.length; i++) {
-  //       formData.append('files', selectedFiles[i], selectedFiles[i].name);
-  //     }
-
-  //     return this.http.post(endpointPath, formData).pipe(
-  //       tap((response: any) => {
-  //         return of(response);
-  //       }),
-  //       catchError((error: any) => {
-  //         return of(error.error ?? error);
-  //       })
-  //     );
-  //   } else {
-  //     const apiResponse = new ApiResponse();
-  //     apiResponse.message = ['No request was made'];
-  //     return of(apiResponse);
-  //   }
-  // }
 }
