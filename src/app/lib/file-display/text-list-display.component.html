@@ -1,0 +1,15 @@
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 card file-container overflow-auto">
+      <label class="fw-bold mb-2">{{ label }}</label>
+      <div class="file-list">
+        <div
+          class="text-decoration-underline text-nowrap mt-3"
+          *ngFor="let item of items"
+        >
+          {{ item }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

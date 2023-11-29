@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { WeatherService } from '../../models/weather.service';
-import { SampleService } from '../../services/sample.service';
+import { Observable, concatMap, finalize, forkJoin, of, zip } from 'rxjs';
+import { WeatherService } from '../../services/weather.service';
 import { ApiResponse } from '../../models/api-excel-response';
 
 @Component({
@@ -10,17 +9,25 @@ import { ApiResponse } from '../../models/api-excel-response';
   styleUrls: ['./add-records-page.component.scss'],
 })
 export class AddRecordsPageComponent implements OnInit {
-  public responseText: string = '';
-  public isLoading: boolean = true;
+  public responseText: string[] = [''];
+  public isLoading: boolean = false;
   constructor(private weatherService: WeatherService) {}
 
   onUpload(selectedFiles: FileList): void {
-    this.weatherService
-      .onUpload(selectedFiles)
-      .subscribe((response: ApiResponse) => {
-        this.responseText = response.message;
-        console.log(this.responseText);
-      });
+    this.isLoading = true;
+    this.responseText = [''];
+
+    const observables = Array.from(selectedFiles).map((file) =>
+      this.weatherService.onUpload(file).pipe(
+        concatMap((response: ApiResponse) => {
+          this.responseText.push(response.message);
+          return of(response);
+        })
+      )
+    );
+    forkJoin(observables).subscribe((responses: ApiResponse[]) => {
+      this.isLoading = false;
+    });
   }
 
   ngOnInit(): void {

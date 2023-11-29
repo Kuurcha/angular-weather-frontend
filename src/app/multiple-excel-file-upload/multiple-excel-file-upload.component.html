@@ -1,9 +1,20 @@
-<div>
-  <input type="file" (change)="onFileChange($event)" multiple />
-  <button (click)="uploadFiles()">Upload Files</button>
-  <app-file-display [fileNames]="this.fileNames"></app-file-display>
-</div>
-
-<div *ngIf="responseLabel">
-  <p>{{ responseLabel }}</p>
+<div class="d-flex flex-column align-items-center justify-content-center">
+  <input
+    type="file"
+    class="form-control my-1"
+    (change)="onFileChange($event)"
+    multiple
+  />
+  <div class="d-flex">
+    <button (click)="uploadFiles()" class="btn btn-primary mx-3">
+      Upload Files
+    </button>
+    <app-loading-spinner [isLoading]="this.isLoading"></app-loading-spinner>
+  </div>
+  <div class="flex-grow-1">
+    <app-text-list-display
+      [items]="this.responseLabel"
+      [label]="'Upload log'"
+    ></app-text-list-display>
+  </div>
 </div>

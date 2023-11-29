@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { CardButtonComponent } from './lib/card-button/card-button.component';
-import { FileDisplayComponent } from './lib/file-display/file-display.component';
+import { FileDisplayComponent } from './lib/file-display/text-list-display.component';
 import { LoadingSpinnerComponent } from './lib/loading-spinner/loading-spinner.component';
 import { AddRecordsPageComponent } from './pages/add-records-page/add-records-page.component';
 import { BrowseRecordPageComponent } from './pages/browse-record-page/browse-record-page.component';

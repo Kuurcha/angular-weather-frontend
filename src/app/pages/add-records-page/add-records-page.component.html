@@ -1,5 +1,8 @@
-<app-multiple-excel-file-upload
-  (onUpload)="onUpload($event)"
-  [responseLabel]="this.responseText"
-></app-multiple-excel-file-upload>
-<app-loading-spinner [isLoading]="this.isLoading"></app-loading-spinner>
+<div class="d-flex flex-column align-items-center justify-content-center">
+  <img src="/assets/excel-icon.png" alt="Excel Icon" />
+  <app-multiple-excel-file-upload
+    (onUpload)="onUpload($event)"
+    [isLoading]="this.isLoading"
+    [responseLabel]="this.responseText"
+  ></app-multiple-excel-file-upload>
+</div>
