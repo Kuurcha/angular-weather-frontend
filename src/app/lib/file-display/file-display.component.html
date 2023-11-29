@@ -1,0 +1,9 @@
+<div class="container" *ngIf="fileNames.length > 0">
+  <div class="row justify-content-center">
+    <div class="col-md-6 card file-container">
+      <div class="text-decoration-underline" *ngFor="let fileName of fileNames">
+        {{ fileName }}
+      </div>
+    </div>
+  </div>
+</div>

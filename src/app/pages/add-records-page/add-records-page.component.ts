@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WeatherService } from '../models/weather.service';
-import { SampleService } from '../services/sample.service';
-import { ApiResponse } from '../models/api-excel-response';
+import { WeatherService } from '../../models/weather.service';
+import { SampleService } from '../../services/sample.service';
+import { ApiResponse } from '../../models/api-excel-response';
 
 @Component({
   selector: 'app-add-records-page',
@@ -11,6 +11,7 @@ import { ApiResponse } from '../models/api-excel-response';
 })
 export class AddRecordsPageComponent implements OnInit {
   public responseText: string = '';
+  public isLoading: boolean = true;
   constructor(private weatherService: WeatherService) {}
 
   onUpload(selectedFiles: FileList): void {

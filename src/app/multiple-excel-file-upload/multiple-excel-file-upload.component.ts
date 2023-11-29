@@ -8,12 +8,16 @@ import { Observable, catchError, of, tap } from 'rxjs';
 })
 export class MultipleExcelFileUploadComponent implements OnInit {
   selectedFiles: FileList | null = null;
+  fileNames: string[] = [];
   @Input() responseLabel: string = '';
 
   constructor() {}
 
   onFileChange(event: any): void {
     this.selectedFiles = event.target.files;
+    this.fileNames = Array.from(event.target.files).map(
+      (file: any) => file.name
+    );
   }
 
   @Output() onUpload: EventEmitter<FileList> = new EventEmitter<FileList>();

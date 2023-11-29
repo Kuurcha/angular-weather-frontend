@@ -6,13 +6,14 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MultipleExcelFileUploadComponent } from './multiple-excel-file-upload/multiple-excel-file-upload.component';
 import { HttpClientModule } from '@angular/common/http';
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { CardButtonComponent } from './card-button/card-button.component';
-import { AddRecordsPageComponent } from './add-records-page/add-records-page.component';
-import { BrowseRecordPageComponent } from './browse-record-page/browse-record-page.component';
-import { HomePageComponent } from './home-page/home-page.component';
-import { WeatherService } from './models/weather.service';
+import { HeaderComponent } from './header/header.component';
+import { CardButtonComponent } from './lib/card-button/card-button.component';
+import { FileDisplayComponent } from './lib/file-display/file-display.component';
+import { LoadingSpinnerComponent } from './lib/loading-spinner/loading-spinner.component';
+import { AddRecordsPageComponent } from './pages/add-records-page/add-records-page.component';
+import { BrowseRecordPageComponent } from './pages/browse-record-page/browse-record-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @NgModule({
   providers: [],
@@ -25,6 +26,8 @@ import { WeatherService } from './models/weather.service';
     AddRecordsPageComponent,
     BrowseRecordPageComponent,
     HomePageComponent,
+    LoadingSpinnerComponent,
+    FileDisplayComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, NgbModule, HttpClientModule],
   bootstrap: [AppComponent],

@@ -1,0 +1,12 @@
+.file-container {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+  max-width: 800px; /* Adjust as needed */
+  margin: auto; /* Center the container */
+}
+
+.file-item {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+}

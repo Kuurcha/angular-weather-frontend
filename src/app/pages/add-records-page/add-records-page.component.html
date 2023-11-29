@@ -1,5 +1,5 @@
-<p>add-records-page works!</p>
 <app-multiple-excel-file-upload
   (onUpload)="onUpload($event)"
   [responseLabel]="this.responseText"
 ></app-multiple-excel-file-upload>
+<app-loading-spinner [isLoading]="this.isLoading"></app-loading-spinner>
