@@ -1,50 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 @Component({
   selector: 'app-multiple-excel-file-upload',
   templateUrl: './multiple-excel-file-upload.component.html',
   styleUrls: ['./multiple-excel-file-upload.component.scss'],
 })
 export class MultipleExcelFileUploadComponent implements OnInit {
-  private baseUrl = 'https://localhost:7090/WeatherForecast/Upload';
-
   selectedFiles: FileList | null = null;
-  responseLabel: string | null = null;
+  @Input() responseLabel: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   onFileChange(event: any): void {
     this.selectedFiles = event.target.files;
   }
 
-  onUpload(): void {
-    if (this.selectedFiles) {
-      const formData = new FormData();
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        formData.append(
-          'files',
-          this.selectedFiles[i],
-          this.selectedFiles[i].name
-        );
-      }
+  @Output() onUpload: EventEmitter<FileList> = new EventEmitter<FileList>();
 
-      this.http
-        .post(this.baseUrl, formData)
-        .pipe(
-          tap((response: any) => {
-            // Handle the API response
-            this.responseLabel = response.message;
-            console.log(response);
-          }),
-          catchError((error: any) => {
-            // Handle error
-            this.responseLabel = error.error.message;
-            console.error(error);
-            return of(); // You can return an observable with a default value or handle the error as needed
-          })
-        )
-        .subscribe();
+  uploadFiles(): void {
+    if (this.selectedFiles) {
+      if (this.onUpload) {
+        this.onUpload.emit(this.selectedFiles);
+      }
+    } else {
+      this.responseLabel = 'Please select files before uploading.';
     }
   }
 

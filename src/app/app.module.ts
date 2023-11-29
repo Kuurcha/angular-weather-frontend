@@ -12,11 +12,21 @@ import { CardButtonComponent } from './card-button/card-button.component';
 import { AddRecordsPageComponent } from './add-records-page/add-records-page.component';
 import { BrowseRecordPageComponent } from './browse-record-page/browse-record-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { WeatherService } from './models/weather.service';
 
 @NgModule({
-  declarations: [AppComponent, MultipleExcelFileUploadComponent, HeaderComponent, FooterComponent, CardButtonComponent, AddRecordsPageComponent, BrowseRecordPageComponent, HomePageComponent],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, HttpClientModule],
   providers: [],
+  declarations: [
+    AppComponent,
+    MultipleExcelFileUploadComponent,
+    HeaderComponent,
+    FooterComponent,
+    CardButtonComponent,
+    AddRecordsPageComponent,
+    BrowseRecordPageComponent,
+    HomePageComponent,
+  ],
+  imports: [BrowserModule, AppRoutingModule, NgbModule, HttpClientModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

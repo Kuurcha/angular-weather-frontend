@@ -1,7 +1,6 @@
-File input!
 <div>
   <input type="file" (change)="onFileChange($event)" multiple />
-  <button (click)="onUpload()">Upload Files</button>
+  <button (click)="uploadFiles()">Upload Files</button>
 </div>
 
 <div *ngIf="responseLabel">
