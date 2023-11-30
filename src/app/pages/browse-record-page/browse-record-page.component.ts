@@ -77,6 +77,7 @@ export class BrowseRecordPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.weatherService.setBaseUrl('https://localhost:7090/WeatherForecast');
+    // this.weatherRecords.data = this.weatherService.generateMockData();
     this.setTableRecords();
     this.setTotalItems();
   }

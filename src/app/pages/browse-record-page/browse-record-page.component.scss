@@ -3,24 +3,28 @@
 }
 
 .mat-table {
+  height: 75vh;
   display: flex;
   flex-direction: column;
-  height: 75vh;
-  overflow-y: auto;
 }
 
-.mat-row,
-.mat-cell {
+.flex-row {
+  display: flex;
   flex: 1;
 }
 
-.mat-cell,
-.mat-header-cell {
-  flex: 1;
-  overflow: hidden;
-  white-space: nowrap; /* Optional: Prevent cell content from wrapping */
-  text-overflow: ellipsis; /* Optional: Add ellipsis for overflowed content */
+.flex-cell {
+  overflow: auto; /* or overflow: hidden; depending on your requirements */
 }
+// .table-container {
+//   flex: 1;
+//   min-height: 0;
+//   overflow: auto;
+// }
+// .mat-cell {
+//   flex: 1;
+// }
+
 mat-header-cell,
 mat-cell {
   justify-content: center;
