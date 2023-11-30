@@ -1,1 +1,24 @@
-<p>browse-record-page works!</p>
+<div class="mat-elevation-z8 headerOffset recordTable">
+  <mat-table [dataSource]="weatherRecords" matSort>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.field">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ column.header }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ getColumnValue(row, column.field) }}
+      </mat-cell>
+    </ng-container>
+  </mat-table>
+</div>
+<mat-paginator
+  class="my-3"
+  #paginator
+  [pageSizeOptions]="this.pageSize"
+  [pageIndex]="paginator.pageIndex"
+  (page)="onPageChange($event)"
+></mat-paginator>
+<!-- <div>
+  <button (click)="debug()">Debug</button>
+</div> -->

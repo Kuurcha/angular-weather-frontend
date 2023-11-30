@@ -17,6 +17,45 @@ export class WeatherService {
     console.log('WeatherService constructor');
   }
 
+  handleError(error: any): Observable<ApiResponse> {
+    if (error.status === 0) {
+      const networkError = new Error(
+        "Network error. Server couldn't be reached. Please check your internet connection."
+      );
+      return of(networkError);
+    } else {
+      // Handle other errors
+      return of(
+        error.error != null && error.error.message != null ? error.error : error
+      );
+    }
+  }
+
+  getWeatherDetails(offset: number, limit: number): Observable<ApiResponse> {
+    return this.http
+      .get(`${this.baseUrl}?offset=${offset}&limit=${limit}`)
+      .pipe(
+        tap((response: any) => {
+          return response;
+        }),
+        catchError((error: any) => {
+          return this.handleError(error);
+        })
+      );
+  }
+
+  getTotalWeatherRecords(): Observable<ApiResponse> {
+    const url = `${this.baseUrl}/total`;
+    return this.http.get<ApiResponse>(url).pipe(
+      tap((response: any) => {
+        return response;
+      }),
+      catchError((error: any) => {
+        return this.handleError(error);
+      })
+    );
+  }
+
   onUpload(selectedFile: File): Observable<ApiResponse> {
     let endpointPath = this.baseUrl + '/Upload';
 
@@ -28,19 +67,7 @@ export class WeatherService {
           return response;
         }),
         catchError((error: any) => {
-          if (error.status === 0) {
-            const networkError = new Error(
-              "Network error. Server couldn't be reached. Please check your internet connection."
-            );
-            return of(networkError);
-          } else {
-            // Handle other errors
-            return of(
-              error.error != null && error.error.message != null
-                ? error.error
-                : error
-            );
-          }
+          return this.handleError(error);
         })
       );
     } else {
