@@ -1,6 +1,7 @@
 import { WeatherRecordDetails } from './weather-record-details';
 
 export class WeatherRecord {
+  id: number = 0;
   date: Date = new Date();
   temperature: string = '';
   humidity?: number;

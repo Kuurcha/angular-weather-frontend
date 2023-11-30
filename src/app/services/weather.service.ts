@@ -26,13 +26,23 @@ export class WeatherService {
       );
       return of(networkError);
     } else {
-      // Handle other errors
       return of(
         error.error != null && error.error.message != null ? error.error : error
       );
     }
   }
-
+  getWeatherDetailsById(id: number, limit: number): Observable<ApiResponse> {
+    return this.http
+      .get(`${this.baseUrl}/biggerThanId/?lastId=${id}&limit=${limit}`)
+      .pipe(
+        tap((response: any) => {
+          return response;
+        }),
+        catchError((error: any) => {
+          return this.handleError(error);
+        })
+      );
+  }
   getWeatherDetails(offset: number, limit: number): Observable<ApiResponse> {
     return this.http
       .get(`${this.baseUrl}?offset=${offset}&limit=${limit}`)

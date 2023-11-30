@@ -14,7 +14,6 @@ export class AddRecordsPageComponent implements OnInit {
   constructor(private weatherService: WeatherService) {}
 
   onUploadBatch(selectedFiles: FileList): void {
-    // Calculate and print the elapsed time
     const startTime = performance.now();
     this.isLoading = true;
     this.responseText = [''];
@@ -29,10 +28,7 @@ export class AddRecordsPageComponent implements OnInit {
     );
     forkJoin(observables).subscribe((responses: ApiResponse[]) => {
       this.isLoading = false;
-      // Your operation here
-      // ...
 
-      // Stop measuring time
       const endTime = performance.now();
       const elapsedTime = endTime - startTime;
       console.log(`Operation took ${elapsedTime} milliseconds.`);

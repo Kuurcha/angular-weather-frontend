@@ -49,12 +49,21 @@ export class BrowseRecordPageComponent implements OnInit {
     private datePipe: DatePipe
   ) {}
 
+  getLatestId(): number {
+    const data = this.weatherRecords.data;
+    if (data.length > 0) {
+      const latestRecord = data.reduce((maxRecord, currentRecord) =>
+        currentRecord.id > maxRecord.id ? currentRecord : maxRecord
+      );
+      return latestRecord.id;
+    }
+    return -1;
+  }
+
   setTableRecords(): void {
+    const lastId = this.getLatestId();
     this.weatherService
-      .getWeatherDetails(
-        this.pageSize[0] * this.currentPage,
-        this.pageSize[0] * 10
-      )
+      .getWeatherDetailsById(lastId, this.pageSize[0] * 10)
       .subscribe((response: ApiResponse) => {
         if (response.content) {
           const newData: WeatherRecord[] = response.content;
