@@ -79,7 +79,10 @@ export class BrowseRecordPageComponent implements OnInit {
 
   setTableRecords(): void {
     this.weatherService
-      .getWeatherDetails(this.pageSize[0] * this.currentPage, this.pageSize[0])
+      .getWeatherDetails(
+        this.pageSize[0] * this.currentPage,
+        this.pageSize[0] * 10
+      )
       .subscribe((response: ApiResponse) => {
         if (response.content) {
           const newData: WeatherRecord[] = response.content;
@@ -129,6 +132,7 @@ export class BrowseRecordPageComponent implements OnInit {
     this.currentPage = event.pageIndex;
     if (!this.hasDataForPage(this.paginator.pageIndex)) {
       this.setTableRecords();
+    } else {
     }
 
     this.setTotalItems();
