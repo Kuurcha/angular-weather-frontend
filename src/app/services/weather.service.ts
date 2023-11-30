@@ -56,6 +56,27 @@ export class WeatherService {
     );
   }
 
+  onUploadBatch(selectedFile: File): Observable<ApiResponse> {
+    let endpointPath = this.baseUrl + '/Upload/Batch';
+
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile, selectedFile.name);
+      return this.http.post(endpointPath, formData).pipe(
+        tap((response: any) => {
+          return response;
+        }),
+        catchError((error: any) => {
+          return this.handleError(error);
+        })
+      );
+    } else {
+      const apiResponse = new ApiResponse();
+      apiResponse.message = 'No file selected';
+      return of(apiResponse);
+    }
+  }
+
   onUpload(selectedFile: File): Observable<ApiResponse> {
     let endpointPath = this.baseUrl + '/Upload';
 

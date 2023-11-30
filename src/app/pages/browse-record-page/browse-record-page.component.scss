@@ -2,25 +2,24 @@
   min-width: 120vh;
 }
 
-.mat-row {
-  height: 6.5vh;
-}
-
 .mat-table {
-  height: 71.5vh;
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
   overflow-y: auto;
 }
 
-.mat-header-row {
-  height: 6.5vh;
+.mat-row,
+.mat-cell {
+  flex: 1;
 }
 
-.mat-footer-row {
-  height: 6.5vh;
-}
-
-.mat-paginator {
-  height: 6.5h;
+.mat-cell,
+.mat-header-cell {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap; /* Optional: Prevent cell content from wrapping */
+  text-overflow: ellipsis; /* Optional: Add ellipsis for overflowed content */
 }
 mat-header-cell,
 mat-cell {

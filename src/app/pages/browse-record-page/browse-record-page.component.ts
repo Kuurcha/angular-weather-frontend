@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, map, of, switchMap, tap } from 'rxjs';
@@ -92,7 +92,7 @@ export class BrowseRecordPageComponent implements OnInit {
     );
   }
 
-  onPageChange(event: any): void {
+  onPageChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     if (!this.hasDataForPage(this.paginator.pageIndex)) {
       this.setTableRecords();
