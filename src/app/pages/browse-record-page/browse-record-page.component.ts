@@ -1,10 +1,5 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -51,31 +46,8 @@ export class BrowseRecordPageComponent implements OnInit {
   }
   constructor(
     private weatherService: WeatherService,
-    private cdr: ChangeDetectorRef
+    private datePipe: DatePipe
   ) {}
-
-  // checkIfItemCountAreDifferent(): void {
-  //   this.weatherService
-  //     .getTotalWeatherRecords()
-  //     .pipe(
-  //       switchMap((response: ApiResponse) => {
-  //         if (response.content) {
-  //           const newTotalItems = response.content;
-  //           if (newTotalItems !== this.totalItems) {
-  //             this.currentPage = 0;
-  //             this.weatherRecords.data = [];
-  //             this.totalItems = newTotalItems;
-  //             this.paginator.length = this.totalItems;
-  //           }
-  //         }
-  //         return of(response);
-  //       })
-  //     )
-  //     .subscribe(() => {
-  //       // Now that checkItems is done, invoke setTableRecords
-  //       this.setTableRecords();
-  //     });
-  // }
 
   setTableRecords(): void {
     this.weatherService
@@ -88,7 +60,6 @@ export class BrowseRecordPageComponent implements OnInit {
           const newData: WeatherRecord[] = response.content;
           this.weatherRecords.data = [...this.weatherRecords.data, ...newData];
 
-          // After setting table records, call setTotalItems
           this.setTotalItems().subscribe();
         }
       });
@@ -104,13 +75,6 @@ export class BrowseRecordPageComponent implements OnInit {
     );
   }
 
-  debug(): void {
-    console.log('Total Items:', this.paginator);
-
-    console.log('Weather Records Data:', this.weatherRecords.data);
-
-    // Add more variables to log if needed
-  }
   ngOnInit(): void {
     this.weatherService.setBaseUrl('https://localhost:7090/WeatherForecast');
     this.setTableRecords();
@@ -143,6 +107,9 @@ export class BrowseRecordPageComponent implements OnInit {
       return row.weatherRecordDetails
         ? row.weatherRecordDetails.description
         : '';
+    }
+    if (field === 'date') {
+      return this.datePipe.transform(row.date, 'yyyy-MM-dd \n HH:mm:ss');
     }
     return row[field as keyof WeatherRecord];
   }

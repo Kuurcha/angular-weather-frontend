@@ -19,9 +19,10 @@ import { MultipleExcelFileUploadComponent } from './multiple-excel-file-upload/m
 import { AddRecordsPageComponent } from './pages/add-records-page/add-records-page.component';
 import { BrowseRecordPageComponent } from './pages/browse-record-page/browse-record-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
-  providers: [],
+  providers: [DatePipe],
   declarations: [
     AppComponent,
     MultipleExcelFileUploadComponent,

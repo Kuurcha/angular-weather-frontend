@@ -1,6 +1,28 @@
 .recordTable {
-  min-width: 100vh;
+  min-width: 120vh;
 }
-.mat-cell {
-  text-align: center;
+
+.mat-row {
+  height: 6.5vh;
+}
+
+.mat-table {
+  height: 71.5vh;
+  overflow-y: auto;
+}
+
+.mat-header-row {
+  height: 6.5vh;
+}
+
+.mat-footer-row {
+  height: 6.5vh;
+}
+
+.mat-paginator {
+  height: 6.5h;
+}
+mat-header-cell,
+mat-cell {
+  justify-content: center;
 }
