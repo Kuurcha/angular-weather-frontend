@@ -15,7 +15,12 @@
               formControlName="start"
               placeholder="Start date"
             />
-            <input matEndDate formControlName="end" placeholder="End date" />
+            <input
+              matEndDate
+              formControlName="end"
+              placeholder="End date"
+              (dateChange)="onDateRangeChange($event)"
+            />
           </mat-date-range-input>
           <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle

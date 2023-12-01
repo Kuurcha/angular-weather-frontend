@@ -1,7 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import {
+  DateRange,
+  MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -75,22 +78,50 @@ export class BrowseRecordPageComponent implements OnInit {
     return -1;
   }
 
+  private handleApiResponse(response: ApiResponse): void {
+    if (response.content) {
+      const newData: WeatherRecord[] = response.content;
+      this.weatherRecords.data = [...this.weatherRecords.data, ...newData];
+      this.setTotalItems().subscribe();
+    }
+  }
   setTableRecords(): void {
     const lastId = this.getLatestId();
-    this.weatherService
-      .getWeatherDetailsById(lastId, this.pageSize[0] * 10)
-      .subscribe((response: ApiResponse) => {
-        if (response.content) {
-          const newData: WeatherRecord[] = response.content;
-          this.weatherRecords.data = [...this.weatherRecords.data, ...newData];
-
-          this.setTotalItems().subscribe();
-        }
-      });
+    if (this.range.valid && this.range.value.start && this.range.value.end) {
+      this.weatherService
+        .getWeatherRecordsInDateRange(
+          lastId,
+          this.pageSize[0] * 10,
+          this.range.value.start,
+          this.range.value.end
+        )
+        .subscribe((response: ApiResponse) => {
+          this.handleApiResponse(response);
+        });
+    } else {
+      this.weatherService
+        .getWeatherDetailsById(lastId, this.pageSize[0] * 10)
+        .subscribe((response: ApiResponse) => {
+          this.handleApiResponse(response);
+        });
+    }
   }
-
   setTotalItems(): Observable<ApiResponse> {
-    return this.weatherService.getTotalWeatherRecords().pipe(
+    let totalRecordsObservable: Observable<ApiResponse>;
+
+    if (this.range.valid && this.range.value.start && this.range.value.end) {
+      const startDate = this.range.value.start;
+      const endDate = this.range.value.end;
+      totalRecordsObservable =
+        this.weatherService.getTotalWeatherRecordsWithinRange(
+          startDate,
+          endDate
+        );
+    } else {
+      totalRecordsObservable = this.weatherService.getTotalWeatherRecords();
+    }
+
+    return totalRecordsObservable.pipe(
       tap((response: ApiResponse) => {
         if (response.content) {
           this.paginator.length = response.content;
@@ -98,6 +129,22 @@ export class BrowseRecordPageComponent implements OnInit {
       })
     );
   }
+
+  onDateRangeChange(event: MatDatepickerInputEvent<any, DateRange<any>>) {
+    this.weatherRecords.data = [];
+    this.totalItems = 0;
+    this.setTableRecords();
+    this.setTotalItems();
+  }
+  // setTotalItems(): Observable<ApiResponse> {
+  //   return this.weatherService.getTotalWeatherRecords().pipe(
+  //     tap((response: ApiResponse) => {
+  //       if (response.content) {
+  //         this.paginator.length = response.content;
+  //       }
+  //     })
+  //   );
+  // }
 
   ngOnInit(): void {
     this.weatherService.setBaseUrl('https://localhost:7090/WeatherForecast');

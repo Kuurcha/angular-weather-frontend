@@ -52,13 +52,25 @@ export class WeatherService {
     return this.makeWeatherGetRequest(url);
   }
 
+  getTotalWeatherRecordsWithinRange(
+    startDate: Date,
+    endDate: Date
+  ): Observable<ApiResponse> {
+    const url = `${
+      this.baseUrl
+    }/totalInDateRange?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
+    return this.makeWeatherGetRequest(url);
+  }
+
   getWeatherRecordsInDateRange(
     id: number,
     limit: number,
     startDate: Date,
     endDate: Date
   ): Observable<ApiResponse> {
-    const url = `${this.baseUrl}/inDateRange/?lastId=${id}&limit=${limit}&startDate=${startDate}&endDate=${endDate}`;
+    const url = `${
+      this.baseUrl
+    }/inDateRange/?lastId=${id}&limit=${limit}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     return this.makeWeatherGetRequest(url);
   }
 
