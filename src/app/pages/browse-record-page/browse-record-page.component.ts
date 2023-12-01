@@ -136,15 +136,6 @@ export class BrowseRecordPageComponent implements OnInit {
     this.setTableRecords();
     this.setTotalItems();
   }
-  // setTotalItems(): Observable<ApiResponse> {
-  //   return this.weatherService.getTotalWeatherRecords().pipe(
-  //     tap((response: ApiResponse) => {
-  //       if (response.content) {
-  //         this.paginator.length = response.content;
-  //       }
-  //     })
-  //   );
-  // }
 
   ngOnInit(): void {
     this.weatherService.setBaseUrl('https://localhost:7090/WeatherForecast');
