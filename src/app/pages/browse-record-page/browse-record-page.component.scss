@@ -1,9 +1,9 @@
 .recordTable {
-  min-width: 120vh;
+  min-width: 150vh;
 }
 
 .mat-table {
-  height: 75vh;
+  height: 70vh;
   display: flex;
   flex-direction: column;
 }
@@ -14,18 +14,19 @@
 }
 
 .flex-cell {
-  overflow: auto; /* or overflow: hidden; depending on your requirements */
+  overflow: auto;
 }
-// .table-container {
-//   flex: 1;
-//   min-height: 0;
-//   overflow: auto;
-// }
-// .mat-cell {
-//   flex: 1;
-// }
 
 mat-header-cell,
 mat-cell {
   justify-content: center;
+  font-size: 12px;
+}
+
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
 }

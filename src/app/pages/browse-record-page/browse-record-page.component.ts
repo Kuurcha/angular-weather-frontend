@@ -1,5 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,6 +18,12 @@ import { WeatherService } from 'src/app/services/weather.service';
 export class BrowseRecordPageComponent implements OnInit {
   weatherRecords: MatTableDataSource<WeatherRecord> =
     new MatTableDataSource<WeatherRecord>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  totalItems: number = 0;
+  currentPage: number = 0;
+  pageSize: number[] = [10];
   columns = [
     { field: 'date', header: 'Date' },
     { field: 'temperature', header: 'Temperature' },
@@ -30,24 +38,31 @@ export class BrowseRecordPageComponent implements OnInit {
     { field: 'weatherRecordDetails', header: 'Details' },
   ];
   displayedColumns: string[] = this.columns.map((column) => column.field);
-
-  totalItems: number = 0;
-  currentPage: number = 0;
-  pageSize: number[] = [10];
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
   columnTemplate!: TemplateRef<any>;
+
+  selectedDate: Date;
+  minDate: Date;
+  maxDate: Date;
+
+  constructor(
+    private weatherService: WeatherService,
+    private datePipe: DatePipe
+  ) {
+    this.selectedDate = new Date();
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 20, 0, 1);
+    this.maxDate = new Date(currentYear + 1, 11, 31);
+  }
 
   ngAfterViewInit() {
     this.weatherRecords.paginator = this.paginator;
     this.weatherRecords.sort = this.sort;
   }
-  constructor(
-    private weatherService: WeatherService,
-    private datePipe: DatePipe
-  ) {}
+
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   getLatestId(): number {
     const data = this.weatherRecords.data;
