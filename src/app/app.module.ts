@@ -11,20 +11,21 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { HttpClientModule } from '@angular/common/http';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
-import { CardButtonComponent } from './lib/card-button/card-button.component';
-import { FileDisplayComponent } from './lib/file-display/text-list-display.component';
-import { LoadingSpinnerComponent } from './lib/loading-spinner/loading-spinner.component';
-import { MultipleExcelFileUploadComponent } from './multiple-excel-file-upload/multiple-excel-file-upload.component';
-import { AddRecordsPageComponent } from './pages/add-records-page/add-records-page.component';
-import { BrowseRecordPageComponent } from './pages/browse-record-page/browse-record-page.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
+
 import { DatePipe, JsonPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CardButtonComponent } from './lib/card-button/card-button.component';
+import { FileDisplayComponent } from './lib/file-display/text-list-display.component';
+import { FooterComponent } from './lib/footer/footer.component';
+import { HeaderComponent } from './lib/header/header.component';
+import { LoadingSpinnerComponent } from './lib/loading-spinner/loading-spinner.component';
+import { MultipleExcelFileUploadComponent } from './lib/multiple-excel-file-upload/multiple-excel-file-upload.component';
+import { AddRecordsPageComponent } from './pages/add-records-page/add-records-page.component';
+import { BrowseRecordPageComponent } from './pages/browse-record-page/browse-record-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @NgModule({
   providers: [DatePipe],

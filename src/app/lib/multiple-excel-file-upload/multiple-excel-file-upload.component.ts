@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, of, tap } from 'rxjs';
 @Component({
   selector: 'app-multiple-excel-file-upload',
   templateUrl: './multiple-excel-file-upload.component.html',

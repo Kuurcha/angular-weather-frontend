@@ -8,7 +8,7 @@ import {
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, map, of, switchMap, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ApiResponse } from 'src/app/models/api-excel-response';
 import { WeatherRecord } from 'src/app/models/weather-record';
 import { WeatherService } from 'src/app/services/weather.service';
@@ -21,9 +21,9 @@ import { WeatherService } from 'src/app/services/weather.service';
 export class BrowseRecordPageComponent implements OnInit {
   weatherRecords: MatTableDataSource<WeatherRecord> =
     new MatTableDataSource<WeatherRecord>();
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
   totalItems: number = 0;
   currentPage: number = 0;
   pageSize: number[] = [10];
@@ -43,7 +43,6 @@ export class BrowseRecordPageComponent implements OnInit {
   displayedColumns: string[] = this.columns.map((column) => column.field);
   columnTemplate!: TemplateRef<any>;
 
-  selectedDate: Date;
   minDate: Date;
   maxDate: Date;
 
@@ -51,7 +50,6 @@ export class BrowseRecordPageComponent implements OnInit {
     private weatherService: WeatherService,
     private datePipe: DatePipe
   ) {
-    this.selectedDate = new Date();
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 20, 0, 1);
     this.maxDate = new Date(currentYear + 1, 11, 31);
@@ -67,6 +65,20 @@ export class BrowseRecordPageComponent implements OnInit {
     end: new FormControl<Date | null>(null),
   });
 
+  //Function for mapping record  to the table
+  getColumnValue(row: WeatherRecord, field: string): any {
+    if (field === 'weatherRecordDetails') {
+      return row.weatherRecordDetails
+        ? row.weatherRecordDetails.description
+        : '';
+    }
+    if (field === 'date') {
+      return this.datePipe.transform(row.date, 'yyyy-MM-dd \n HH:mm:ss');
+    }
+    return row[field as keyof WeatherRecord];
+  }
+
+  //Pagination code
   getLatestId(): number {
     const data = this.weatherRecords.data;
     if (data.length > 0) {
@@ -85,6 +97,7 @@ export class BrowseRecordPageComponent implements OnInit {
       this.setTotalItems().subscribe();
     }
   }
+
   setTableRecords(): void {
     const lastId = this.getLatestId();
     if (this.range.valid && this.range.value.start && this.range.value.end) {
@@ -130,16 +143,20 @@ export class BrowseRecordPageComponent implements OnInit {
     );
   }
 
-  onDateRangeChange(event: MatDatepickerInputEvent<any, DateRange<any>>) {
-    this.weatherRecords.data = [];
-    this.totalItems = 0;
-    this.setTableRecords();
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    if (!this.hasDataForPage(this.paginator.pageIndex)) {
+      this.setTableRecords();
+    } else {
+    }
+
     this.setTotalItems();
   }
 
-  ngOnInit(): void {
-    this.weatherService.setBaseUrl('https://localhost:7090/WeatherForecast');
-    // this.weatherRecords.data = this.weatherService.generateMockData();
+  //Date filter code
+  onDateRangeChange(event: MatDatepickerInputEvent<any, DateRange<any>>) {
+    this.weatherRecords.data = [];
+    this.totalItems = 0;
     this.setTableRecords();
     this.setTotalItems();
   }
@@ -155,25 +172,9 @@ export class BrowseRecordPageComponent implements OnInit {
     );
   }
 
-  onPageChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
-    if (!this.hasDataForPage(this.paginator.pageIndex)) {
-      this.setTableRecords();
-    } else {
-    }
-
+  ngOnInit(): void {
+    this.weatherService.setBaseUrl('https://localhost:7090/WeatherForecast');
+    this.setTableRecords();
     this.setTotalItems();
-  }
-
-  getColumnValue(row: WeatherRecord, field: string): any {
-    if (field === 'weatherRecordDetails') {
-      return row.weatherRecordDetails
-        ? row.weatherRecordDetails.description
-        : '';
-    }
-    if (field === 'date') {
-      return this.datePipe.transform(row.date, 'yyyy-MM-dd \n HH:mm:ss');
-    }
-    return row[field as keyof WeatherRecord];
   }
 }

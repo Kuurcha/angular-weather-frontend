@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, concatMap, finalize, forkJoin, of, zip } from 'rxjs';
+import { concatMap, forkJoin, of } from 'rxjs';
 import { WeatherService } from '../../services/weather.service';
 import { ApiResponse } from '../../models/api-excel-response';
 
