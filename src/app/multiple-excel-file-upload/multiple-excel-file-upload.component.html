@@ -1,14 +1,14 @@
 <div class="d-flex flex-column align-items-center justify-content-center">
   <input
     type="file"
-    class="form-control my-1"
+    class="form-control mt-3"
     (change)="onFileChange($event)"
     multiple
   />
   <div class="d-flex">
     <button
       (click)="uploadFiles()"
-      class="btn btn-primary mx-3"
+      class="btn btn-primary mt-3"
       [disabled]="this.isLoading"
     >
       Upload Files
