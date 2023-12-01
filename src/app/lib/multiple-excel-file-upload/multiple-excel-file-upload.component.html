@@ -13,7 +13,9 @@
     >
       Upload Files
     </button>
-    <app-loading-spinner [isLoading]="this.isLoading"></app-loading-spinner>
+    <div class="mx-2 align-self-end">
+      <app-loading-spinner [isLoading]="this.isLoading"></app-loading-spinner>
+    </div>
   </div>
   <div class="flex-grow-1">
     <app-text-list-display
