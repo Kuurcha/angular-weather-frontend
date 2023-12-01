@@ -15,9 +15,7 @@ export class WeatherService {
     this.baseUrl = baseUrl;
   }
 
-  constructor(private http: HttpClient) {
-    console.log('WeatherService constructor');
-  }
+  constructor(private http: HttpClient) {}
 
   handleError(error: any): Observable<ApiResponse> {
     if (error.status === 0) {
@@ -31,41 +29,69 @@ export class WeatherService {
       );
     }
   }
-  getWeatherDetailsById(id: number, limit: number): Observable<ApiResponse> {
-    return this.http
-      .get(`${this.baseUrl}/biggerThanId/?lastId=${id}&limit=${limit}`)
-      .pipe(
-        tap((response: any) => {
-          return response;
-        }),
-        catchError((error: any) => {
-          return this.handleError(error);
-        })
-      );
+
+  private makeWeatherGetRequest(url: string): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(url).pipe(
+      tap((response: ApiResponse) => response),
+      catchError(this.handleError)
+    );
   }
+
+  getWeatherDetailsById(id: number, limit: number): Observable<ApiResponse> {
+    const url = `${this.baseUrl}/biggerThanId/?lastId=${id}&limit=${limit}`;
+    return this.makeWeatherGetRequest(url);
+  }
+
   getWeatherDetails(offset: number, limit: number): Observable<ApiResponse> {
-    return this.http
-      .get(`${this.baseUrl}?offset=${offset}&limit=${limit}`)
-      .pipe(
-        tap((response: any) => {
-          return response;
-        }),
-        catchError((error: any) => {
-          return this.handleError(error);
-        })
-      );
+    const url = `${this.baseUrl}?offset=${offset}&limit=${limit}`;
+    return this.makeWeatherGetRequest(url);
   }
 
   getTotalWeatherRecords(): Observable<ApiResponse> {
     const url = `${this.baseUrl}/total`;
-    return this.http.get<ApiResponse>(url).pipe(
-      tap((response: any) => {
-        return response;
-      }),
-      catchError((error: any) => {
-        return this.handleError(error);
-      })
-    );
+    return this.makeWeatherGetRequest(url);
+  }
+
+  getWeatherRecordsInDateRange(
+    id: number,
+    limit: number,
+    startDate: Date,
+    endDate: Date
+  ): Observable<ApiResponse> {
+    const url = `${this.baseUrl}/inDateRange/?lastId=${id}&limit=${limit}&startDate=${startDate}&endDate=${endDate}`;
+    return this.makeWeatherGetRequest(url);
+  }
+
+  private makeWeatherUploadRequest(
+    endpointPath: string,
+    selectedFile: File
+  ): Observable<ApiResponse> {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile, selectedFile.name);
+      return this.http.post(endpointPath, formData).pipe(
+        tap((response: any) => {
+          return response;
+        }),
+        catchError((error: any) => {
+          return this.handleError(error);
+        })
+      );
+    } else {
+      const apiResponse = new ApiResponse();
+      apiResponse.message = 'No file selected';
+      return of(apiResponse);
+    }
+  }
+
+  onUploadBatch(selectedFile: File): Observable<ApiResponse> {
+    const endpointPath = `${this.baseUrl}/Upload/Batch`;
+    return this.makeWeatherUploadRequest(endpointPath, selectedFile);
+  }
+
+  onUpload(selectedFile: File): Observable<ApiResponse> {
+    const endpointPath = `${this.baseUrl}/Upload`;
+    return this.makeWeatherUploadRequest(endpointPath, selectedFile);
   }
 
   generateMockData(): WeatherRecord[] {
@@ -95,47 +121,5 @@ export class WeatherService {
     }
 
     return mockData;
-  }
-
-  onUploadBatch(selectedFile: File): Observable<ApiResponse> {
-    let endpointPath = this.baseUrl + '/Upload/Batch';
-
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('file', selectedFile, selectedFile.name);
-      return this.http.post(endpointPath, formData).pipe(
-        tap((response: any) => {
-          return response;
-        }),
-        catchError((error: any) => {
-          return this.handleError(error);
-        })
-      );
-    } else {
-      const apiResponse = new ApiResponse();
-      apiResponse.message = 'No file selected';
-      return of(apiResponse);
-    }
-  }
-
-  onUpload(selectedFile: File): Observable<ApiResponse> {
-    let endpointPath = this.baseUrl + '/Upload';
-
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('file', selectedFile, selectedFile.name);
-      return this.http.post(endpointPath, formData).pipe(
-        tap((response: any) => {
-          return response;
-        }),
-        catchError((error: any) => {
-          return this.handleError(error);
-        })
-      );
-    } else {
-      const apiResponse = new ApiResponse();
-      apiResponse.message = 'No file selected';
-      return of(apiResponse);
-    }
   }
 }
